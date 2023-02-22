@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardPostController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
@@ -33,7 +34,7 @@ Route::get('/about', [AboutController::class,'dataAbout']);
 
 Route::get('/blog', [PostController::class, 'index']);
 
-Route::get('/posts/{post:slug}', [PostController::class,'find']);
+Route::get('/posts/{post:slug}', [PostController::class,'find'])->middleware('auth');
 
 Route::get('/categories/{category:slug}', function(Category $category) {
     return view('posts', [
@@ -60,3 +61,5 @@ Route::post('/register', [RegisterController::class, 'store']);
 Route::get('/dashboard', function() {
     return view('dashboard.index');
 })->middleware('auth');
+
+Route::resource('/dashboard/posts', DashboardPostController::class)->middleware('auth');
